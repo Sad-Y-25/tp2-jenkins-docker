@@ -1,17 +1,21 @@
 pipeline {
     agent any
 
+    options {
+        skipDefaultCheckout(true)
+    }
+
     environment {
         DOCKER_IMAGE = 'devsadiqui/tp2-jenkins-docker'
     }
 
     stages {
 
-        stage('Clone Repository') {
+        stage('Checkout') {
             steps {
-                git branch: 'main',
-                    credentialsId: 'github-credentials',
-                    url: 'https://github.com/Sad-Y-25/tp2-jenkins-docker.git'
+                retry(3) {
+                    checkout scm
+                }
             }
         }
 
